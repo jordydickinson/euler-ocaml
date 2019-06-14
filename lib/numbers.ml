@@ -12,3 +12,21 @@ let primes = Sequence.memoize @@
       then Yield(n, (ps @ [n], n + 1))
       else Skip((ps, n + 1))
   )
+
+let eratosthenes n =
+  if n < 2 then invalid_arg "n must be >= 2" else
+  let sieve = Array.create n true in
+  sieve.(0) <- false;
+  sieve.(1) <- false;
+  Array.set sieve 1 false;
+  for i = 2 to int_of_float @@ sqrt (float n) do
+    if sieve.(i) then
+      let j = ref (Int.pow i 2) in
+      while !j < n do
+        sieve.(!j) <- false;
+        j := !j + i
+      done
+  done;
+  Array.foldi sieve ~init:[]
+    ~f:(fun i acc is_prime -> if is_prime then i :: acc else acc)
+  |> List.rev

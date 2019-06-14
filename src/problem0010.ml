@@ -7,7 +7,6 @@
 open Core_kernel
 
 let () =
-  Sequence.take_while Numbers.primes
-    (fun p -> p < 2000000)
-  |> Sequence.fold ~init:0 ~f:(fun acc p -> printf "%d\n%!" p; acc + p)
+  Numbers.eratosthenes 2000000
+  |> List.fold ~init:0 ~f:(fun sum p -> sum + p)
   |> printf "%d\n" (* 142913828922 *)
