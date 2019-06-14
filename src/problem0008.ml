@@ -28,7 +28,6 @@
  *)
 
 open Core_kernel
-open Stdio
 
 let digits = {|
     73167176531330624919225119674426574742355349194934
@@ -64,8 +63,9 @@ let span_product s =
   String.to_list s
   |> List.fold ~init:1 ~f:(fun acc c -> acc * (int_of_string @@ String.of_char c))
 
-let () =
+let solve () =
   spans 13 digits
   |> List.map ~f:span_product
   |> List.fold ~init:0 ~f:max
-  |> printf "%d\n" (* 23514624000 *)
+  |> string_of_int
+   (* 23514624000 *)

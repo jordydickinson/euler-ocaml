@@ -30,6 +30,6 @@ let square_of_sum_upto n =
   in
   Int.pow sum 2
 
-let () =
-  printf "%d\n" @@ (square_of_sum_upto 100) - (sum_of_squares_upto 100)
+let solve () =
+  (square_of_sum_upto 100) - (sum_of_squares_upto 100) |> string_of_int
   (* 25164150 *)

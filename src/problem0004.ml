@@ -6,7 +6,6 @@
  *)
 
 open Core_kernel
-open Stdio
 
 let is_palindrome str =
   let len = String.length str in
@@ -19,7 +18,7 @@ let rec select2 xs =
   | []        -> []
   | x0 :: xs  -> (x0, x0) :: List.map xs (fun x -> (x0, x)) @ select2 xs
 
-let () =
+let solve () =
   let three_digit_nats = List.init 900 (fun i -> 999 - i) in
   let cart_prod = List.cartesian_product three_digit_nats three_digit_nats in
   let multiples = List.map cart_prod (fun (n1, n2) -> n1 * n2) in
@@ -33,6 +32,5 @@ let () =
   let max_palindrome =
     List.max_elt (List.map palindromes Int.of_string) Int.compare
   in
-  match max_palindrome with
-  | Some(n) -> printf "%d\n" n (* 906609 *)
-  | None -> failwith "No max element found"
+  Option.value_exn max_palindrome |> string_of_int
+  (* 906609 *)

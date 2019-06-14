@@ -6,9 +6,6 @@ OCB_FLAGS = -use-ocamlfind -I src -I lib
 OCB = ocamlbuild $(OCB_FLAGS)
 
 PKGS = core_kernel
-PROBLEMS_ML = $(wildcard src/problem*.ml)
-PROBLEMS_NATIVE = $(patsubst src/%.ml,%.native,$(PROBLEMS_ML))
-PROBLEMS_BYTE = $(patsubst src/%.ml,%.byte,$(PROBLEMS_ML))
 
 all: native byte
 
@@ -16,16 +13,16 @@ clean:
 	$(OCB) -clean
 
 native: sanity
-	$(OCB) $(PROBLEMS_NATIVE)
+	$(OCB) main.native
 
 byte: sanity
-	$(OCB) $(PROBLEMS_BYTE)
+	$(OCB) main.byte
 
 profile: sanity
-	$(OCB) -tag profile $(PROBLEMS_NATIVE)
+	$(OCB) -tag profile main.native
 
 debug: sanity
-	$(OCB) -tag debug $(PROBLEMS_BYTE)
+	$(OCB) -tag debug main.byte
 
 sanity:
 	ocamlfind query $(PKGS)

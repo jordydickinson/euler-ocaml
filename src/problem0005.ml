@@ -7,17 +7,15 @@
  *)
 
 open Core_kernel
-open Stdio
 
 let rec divisible_thru i j n =
   if i > j then true
   else if n % i = 0 then divisible_thru (i + 1) j n
   else false
 
-let solution =
+let solve () =
   let rec loop n =
     if divisible_thru 1 20 n then n
     else loop (n + 1) in
-  loop 1
-
-let () = printf "%d\n" solution (* 232792560 *)
+  loop 1 |> string_of_int
+  (* 232792560 *)

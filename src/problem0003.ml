@@ -5,7 +5,6 @@
 *)
 
 open Core_kernel
-open Stdio
 
 let largest_prime_factor n =
   let rec loop n best primes =
@@ -24,6 +23,6 @@ let largest_prime_factor n =
   if n <= 1 then invalid_arg "n must be greater than or equal to 2" else
   loop n 1 Numbers.primes
 
-let () =
-  largest_prime_factor 600851475143
-  |> printf "%d\n" (* 6857 *)
+let solve () =
+  largest_prime_factor 600851475143 |> string_of_int
+  (* 6857 *)

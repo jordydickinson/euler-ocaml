@@ -6,7 +6,8 @@
 
 open Core_kernel
 
-let () =
+let solve () =
   Numbers.eratosthenes 2000000
   |> List.fold ~init:0 ~f:(fun sum p -> sum + p)
-  |> printf "%d\n" (* 142913828922 *)
+  |> string_of_int
+  (* 142913828922 *)

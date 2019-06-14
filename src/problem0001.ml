@@ -6,15 +6,13 @@
  *)
 
 open Core_kernel
-open Stdio
 
-let solution =
+let solve () =
   let rec loop n acc =
     if n >= 1000 then acc else
     if n % 3 = 0 || n % 5 = 0
     then loop (n + 1) (acc + n)
     else loop (n + 1) acc
   in
-  loop 1 0
-
-let () = printf "%d\n" solution (* 233168 *)
+  loop 1 0 |> string_of_int
+  (* 233168 *)

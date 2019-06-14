@@ -5,10 +5,10 @@
  *)
 
 open Core_kernel
-open Stdio
 
-let () =
+let solve () =
   Sequence.take Numbers.primes 10001
   |> Sequence.to_list_rev
   |> List.hd_exn
-  |> printf "%d\n" (* 104743 *)
+  |> string_of_int
+  (* 104743 *)

@@ -9,9 +9,8 @@
  *)
 
 open Core_kernel
-open Stdio
 
-let solution =
+let solve () =
   let max_fib = 4000000 in
   let rec loop last cur acc =
     if cur > max_fib then acc else
@@ -19,6 +18,5 @@ let solution =
     then loop cur (last + cur) (acc + cur)
     else loop cur (last + cur) acc
   in
-  loop 1 2 0
-
-let () = printf "%d\n" solution (* 4613732 *)
+  loop 1 2 0 |> string_of_int
+  (* 4613732 *)

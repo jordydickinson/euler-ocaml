@@ -25,8 +25,10 @@ let triplets_summing_to n =
 let is_pythagorean (a, b, c) =
   (Int.pow a 2) + (Int.pow b 2) = (Int.pow c 2)
 
-let () =
+let solve () =
   triplets_summing_to 1000
   |> List.filter ~f:is_pythagorean
-  |> List.iter ~f:(fun (a, b, c) -> printf "%d\n" (a * b * c))
+  |> List.hd_exn
+  |> fun (a, b, c) -> a * b * c
+  |> string_of_int
   (* 31875000 *)
