@@ -1,0 +1,6 @@
+*.native
+*.byte
+/_build
+
+# Editor stuff
+/.vscode
