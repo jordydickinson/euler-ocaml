@@ -3,6 +3,9 @@ open Core_kernel
 let count_from n =
   Sequence.unfold ~init:n ~f:(fun i -> Some(i, i + 1))
 
+let range n m =
+  Sequence.init (m - n) (fun i -> n + i)
+
 (* This is an adaptation of the infinite sieve described in the paper:
 
        Melissa E. O’Neill. The Genuine Sieve of Eratosthenes. Retrieved June 16,
