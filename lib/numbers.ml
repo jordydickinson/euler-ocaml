@@ -1,17 +1,34 @@
 open Core_kernel
 
-(* NOTE: This implementation could be dramatically improved if written as an
-    incremental sieve, which has a nice functional expression as well as
-    addresses the memory problems with the Sieve of Eratosthenes. This
-    implementation, however, is neither. The Sieve of Erathosthenes was too
-    memory-inefficient for many problems here. *)
-let primes = Sequence.memoize @@
-  Sequence.unfold_step ~init:([], 2) ~f:(
-    fun (ps, n) ->
-      if List.for_all ps (fun p -> n % p <> 0)
-      then Yield(n, (ps @ [n], n + 1))
-      else Skip((ps, n + 1))
-  )
+let count_from n =
+  Sequence.unfold ~init:n ~f:(fun i -> Some(i, i + 1))
+
+(* This is an adaptation of the infinite sieve described in the paper:
+
+       Melissa E. O’Neill. The Genuine Sieve of Eratosthenes. Retrieved June 16,
+       2019 from https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf.
+
+   It's based on one of the earlier implementations found in the paper on page
+   6, before much thought to optimization was given. It should have time
+   complexity of Θ(n log n log log n), provided Core_kernel.Map is the same data
+   structure as Haskell's Data.Map, and provided it's faithful to the
+   implementation found in the paper. Core_kernel.Sequence is being used to
+   imitate Haskell's laziness. *)
+let primes = 
+  let reinsert tbl prime =
+    Map.change tbl prime ~f:(
+      fun factors ->
+        match factors with
+        | None -> Some([prime])
+        | Some(factors) -> Some(prime :: factors)
+    )
+  in
+  Sequence.unfold_with (count_from 2) ~init:(Map.empty (module Int))
+    ~f:(fun tbl x ->
+        match Map.find tbl x with
+        | None -> Yield(x, Map.set tbl (x*x) [x])
+        | Some(factors) -> Skip(List.fold factors ~init:(Map.remove tbl x) ~f:reinsert)
+      )
 
 let eratosthenes n =
   if n < 2 then invalid_arg "n must be >= 2" else
