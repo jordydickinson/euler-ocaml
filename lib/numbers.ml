@@ -50,3 +50,13 @@ let eratosthenes n =
   Array.foldi sieve ~init:[]
     ~f:(fun i acc is_prime -> if is_prime then i :: acc else acc)
   |> List.rev
+
+let rec binomial n k =
+  (* We must be careful to avoid integer overflow of intermediate results, which
+     is why this implementation looks so different from the n!/((n-k)!*k!) we
+     all know and love. *)
+  let rec binomial' accum n' k' =
+    if k' - 1 = k then accum else
+    binomial' (accum * n' / k') (n' - 1) (k' + 1)
+  in
+  binomial' 1 n 1
