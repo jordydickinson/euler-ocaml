@@ -18,20 +18,21 @@ let range n m =
    implementation found in the paper. Core_kernel.Sequence is being used to
    imitate Haskell's laziness. *)
 let primes = 
-  let reinsert tbl prime =
-    Map.change tbl prime ~f:(
-      fun factors ->
-        match factors with
-        | None -> Some([prime])
-        | Some(factors) -> Some(prime :: factors)
-    )
-  in
   Sequence.unfold_with (count_from 2) ~init:(Map.empty (module Int))
-    ~f:(fun tbl x ->
+    ~f:(
+      fun tbl x ->
+        let reinsert tbl prime =
+          Map.change tbl (x + prime) ~f:(
+            fun factors ->
+              match factors with
+              | None -> Some([prime])
+              | Some(factors) -> Some(factors @ [prime])
+          )
+        in
         match Map.find tbl x with
         | None -> Yield(x, Map.set tbl (x*x) [x])
         | Some(factors) -> Skip(List.fold factors ~init:(Map.remove tbl x) ~f:reinsert)
-      )
+    )
 
 let eratosthenes n =
   if n < 2 then invalid_arg "n must be >= 2" else
