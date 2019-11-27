@@ -1,3 +1,4 @@
+true:   package(ppx_jane)
 true:   package(core_kernel)
 true:   package(bignum)
 true:   bin_annot

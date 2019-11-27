@@ -4,5 +4,6 @@ S src
 B _build/lib
 B _build/src
 
+PKG ppx_jane
 PKG core_kernel
 PKG bignum

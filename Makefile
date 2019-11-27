@@ -5,7 +5,7 @@
 OCB_FLAGS = -use-ocamlfind -I src -I lib
 OCB = ocamlbuild $(OCB_FLAGS)
 
-PKGS = core_kernel
+PKGS = core_kernel ppx_jane
 
 all: native byte
 

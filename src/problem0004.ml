@@ -11,7 +11,7 @@ let is_palindrome str =
   let len = String.length str in
   let front = String.sub str 0 (len / 2) in
   let back = String.sub str (len / 2 + len mod 2) (len / 2) in
-  front = (String.rev back)
+  front == String.rev back
 
 let rec select2 xs =
   match xs with
