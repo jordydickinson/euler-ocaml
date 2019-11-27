@@ -33,37 +33,32 @@
   a clever method! ;o)
  *)
 
-open Base
+open Core_kernel
 
-type tree =
-  { head : int
-  ; left : tree option
-  ; right : tree option }
-
-let tree_of_string s =
-  let rows = String.split_lines s
-             |> List.map ~f:String.strip
-             |> List.filter ~f:(fun s -> not (String.is_empty s))
-             |> List.map
-               ~f:(fun row ->
-                   String.split row ~on:' '
-                   |> List.filter_map ~f:int_of_string_opt)
+let pairs xs =
+  let rec pairs' accum xs =
+    match xs with
+    | x1 :: x2 :: xs' ->
+      pairs' ((x1, x2) :: accum) (x2 :: xs')
+    | _ -> List.rev accum 
   in
-  let rec tree_of_rows = function
-    | [] -> None
-    | rows ->
-      let row_tails = List.filter_map (Option.value ~default:[] (List.tl rows))
-          (fun row -> match List.tl row with
-             | Some [] -> None
-             | rowtl -> rowtl)
-      in
-      Some { head = List.hd_exn (List.hd_exn rows)
-           ; left = tree_of_rows (List.tl_exn rows)
-           ; right = tree_of_rows row_tails }
-  in
-  tree_of_rows rows
+  pairs' [] xs
 
-let triangle = tree_of_string {|
+let pairmax (x1, x2) = max x1 x2
+
+let pairsum (x1, x2) = x1 + x2
+
+let triangle_of_string s =
+  String.split_lines s
+  |> List.rev
+  |> List.map ~f:String.strip
+  |> List.filter ~f:(fun s -> not (String.is_empty s))
+  |> List.map
+    ~f:(fun row ->
+        String.split row ~on:' '
+        |> List.filter_map ~f:int_of_string_opt)
+
+let triangle = triangle_of_string {|
     75
     95 64
     17 47 82
@@ -81,11 +76,17 @@ let triangle = tree_of_string {|
     04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
   |}
 
-let rec best_path t =
-  match t with
-  | None -> 0
-  | Some { head = h; left = None; right = None } -> h
-  | Some { head = h; left = l; right = r } ->
-    h + max (best_path l) (best_path r)
+let best_path triangle =
+  let rec best_path' accum triangle =
+    match triangle with
+    | [] -> List.hd_exn accum
+    | row :: triangle ->
+      let maxes = List.map (pairs accum) pairmax in
+      let accum = List.zip_exn maxes row
+                  |> List.map ~f:pairsum
+      in
+      best_path' accum triangle
+  in
+  best_path' (List.hd_exn triangle) (List.tl_exn triangle)
 
-let solve () = string_of_int (best_path triangle)
+let solve () = best_path triangle |> string_of_int
