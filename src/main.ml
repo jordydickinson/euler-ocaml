@@ -25,6 +25,7 @@ let problems = Hashtbl.of_alist_exn (module Int)
     ;(19, Problem0019.solve)
     ;(20, Problem0020.solve)
     ;(21, Problem0021.solve)
+    ;(22, Problem0022.solve)
     ]
 
 let () =
