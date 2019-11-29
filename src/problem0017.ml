@@ -53,7 +53,7 @@ let rec phrase_of_int n =
   | n -> invalid_argf "bad n: %d" n ()
 
 let solve () =
-  Numbers.range 1 1001
+  Sequence.range 1 1001
   |> Sequence.map ~f:phrase_of_int
   |> Sequence.fold ~init:0 ~f:(fun accum s -> accum + String.length s)
   |> string_of_int

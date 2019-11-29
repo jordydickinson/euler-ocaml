@@ -30,7 +30,7 @@ let solve () =
   let rec solve' accum i =
     if i = 10_000 then accum else
     let di = d i in
-    if 2 <= di && di < 10_000 && di != i && d di = i
+    if 2 <= di && di < 10_000 && not (phys_equal di i) && d di = i
     then solve' (accum + i) (i + 1)
     else solve' accum (i + 1)
   in

@@ -29,7 +29,7 @@ let collatz_len =
 
 let solve () =
   let (max_n, _) =
-    Sequence.fold (Numbers.range 1 1_000_000) ~init:(0, 0) ~f:(
+    Sequence.fold (Sequence.range 1 1_000_000) ~init:(0, 0) ~f:(
       fun (max_n, max_collatz_len_n) m ->
         let collatz_len_m = collatz_len m in
         if collatz_len_m > max_collatz_len_n

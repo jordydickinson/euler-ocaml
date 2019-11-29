@@ -3,9 +3,6 @@ open Core_kernel
 let count_from n =
   Sequence.unfold ~init:n ~f:(fun i -> Some(i, i + 1))
 
-let range n m =
-  Sequence.init (m - n) (fun i -> n + i)
-
 let multiples n =
   Sequence.unfold ~init:n ~f:(fun m -> Some(m, n + m))
 
@@ -55,7 +52,7 @@ let eratosthenes n =
     ~f:(fun i acc is_prime -> if is_prime then i :: acc else acc)
   |> List.rev
 
-let rec binomial n k =
+let binomial n k =
   (* We must be careful to avoid integer overflow of intermediate results, which
      is why this implementation looks so different from the n!/((n-k)!*k!) we
      all know and love. *)
