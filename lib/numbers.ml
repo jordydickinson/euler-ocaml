@@ -6,6 +6,9 @@ let count_from n =
 let range n m =
   Sequence.init (m - n) (fun i -> n + i)
 
+let multiples n =
+  Sequence.unfold ~init:n ~f:(fun m -> Some(m, n + m))
+
 (* This is an adaptation of the infinite sieve described in the paper:
 
        Melissa E. O’Neill. The Genuine Sieve of Eratosthenes. Retrieved June 16,
@@ -61,3 +64,21 @@ let rec binomial n k =
     binomial' (accum * n' / k') (n' - 1) (k' + 1)
   in
   binomial' 1 n 1
+
+(** Returns a function which gives the sum of the proper divisors for any
+    integer i such that 2 <= i && i < n. *)
+let pdsum_fn n =
+  let table = Array.create (n - 2) 1 in
+  for i = 2 to n - 1 do
+    let j = ref (i + i) in
+    while !j <= n - 1 do
+      table.(!j - 2) <- table.(!j - 2) + i;
+      j := !j + i
+    done
+  done;
+  let f i =
+    assert (2 <= i);
+    assert (i < n);
+    table.(i - 2)
+  in
+  f
