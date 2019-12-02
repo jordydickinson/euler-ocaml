@@ -19,13 +19,20 @@
 
 open Core_kernel
 
-let collatz_len =
-  let rec collatz_len' accum n =
-    if n = 1 then accum + 1
-    else if n % 2 = 0 then collatz_len' (accum + 1) (n / 2)
-    else collatz_len' (accum + 1) (3*n + 1)
+let memo_rec t f =
+  let memo = Hashtbl.create t in
+  let rec memo_fn x =
+    Hashtbl.find_or_add memo x ~default:(fun () -> f memo_fn x)
   in
-  Memo.general (collatz_len' 0)
+  memo_fn
+
+let collatz_len =
+  let collatz_len' recur n =
+    if n = 1 then 1
+    else if n % 2 = 0 then 1 + recur (n / 2)
+    else 1 + recur (3*n + 1)
+  in
+  memo_rec (module Int) collatz_len'
 
 let solve () =
   let (max_n, _) =
