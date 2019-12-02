@@ -58,5 +58,9 @@ let () =
       | None ->
         eprintf "Error: Problem %d has no solution.\n%!" problem_num
       | Some(soln_fn) ->
-        printf "Solution to problem %d: %s\n%!" problem_num @@ soln_fn ()
+        let t = Sys.time () in
+        let soln = soln_fn () in
+        let t = Sys.time () -. t in
+        printf "Solution to problem %d: %s\n%!" problem_num @@ soln;
+        printf "  Time: %f seconds\n%!" t
   )
