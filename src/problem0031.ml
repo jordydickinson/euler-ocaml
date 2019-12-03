@@ -13,18 +13,18 @@
 
 open Core_kernel
 
-let coins = [200; 100; 50; 20; 10; 5; 2; 1]
+let coins = [5; 10; 20; 50; 100; 200]
 
 let count_ways pence =
-  let rec count_ways' k pence coins accum =
-    let coin = List.hd_exn coins in
-    if coin = 2 then k (accum + pence/2 + 1) else
-    let k = count_ways' k pence (List.tl_exn coins) in
-    if coin <= pence
-    then count_ways' k (pence - coin) coins accum
-    else k accum
-  in
-  count_ways' ident pence coins 0
+  let table = Array.init (pence + 1) (fun pence -> pence/2 + 1) in
+  List.iter coins ~f:(
+      fun coin ->
+        for p = 0 to pence do
+          if p >= coin then
+            table.(p) <- table.(p) + table.(p - coin)
+        done
+    );
+  table.(pence)
 
 let solve () = string_of_int @@
   count_ways 200
