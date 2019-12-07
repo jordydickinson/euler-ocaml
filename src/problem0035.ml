@@ -26,11 +26,11 @@ let rotations xs =
 let solve () =
   Set.filter primes ~f:(
     fun p ->
-      let ps = Numbers.digits_of_int p in
+      let ps = Util.digits_of_int p in
       if List.mem ~equal:(=) ps 0 then false else
       let rotps = rotations ps in
       List.for_all rotps ~f:(
-        fun rotp -> Set.mem primes @@ Numbers.int_of_digits rotp
+        fun rotp -> Set.mem primes @@ Util.int_of_digits rotp
       )
   )
   |> Set.length

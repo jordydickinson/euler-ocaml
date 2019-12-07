@@ -37,7 +37,7 @@ let solve () =
     then (d2, len2)
     else (d1, len1)
   in
-  Numbers.count_from 2
+  Sequences.count_from 2
   |> Sequence.take_while ~f:(fun d -> d < 1000)
   |> Sequence.map ~f:(fun d -> d, cycle_len d)
   |> Sequence.fold ~init:(0, 0) ~f:maxd

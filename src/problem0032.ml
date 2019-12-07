@@ -44,7 +44,7 @@ let solve () =
     then Some c
     else None
   in
-  let perms = Sequence.memoize @@ Numbers.permutations [1; 2; 3; 4; 5; 6; 7; 8; 9] in
+  let perms = Sequence.memoize @@ List_ext.permutations [1; 2; 3; 4; 5; 6; 7; 8; 9] in
   let pandigitals1 = Sequence.filter_map perms ~f:(perm_filter_mapper 1 4) in
   let pandigitals2 = Sequence.filter_map perms ~f:(perm_filter_mapper 2 3) in
   Sequence.append pandigitals1 pandigitals2

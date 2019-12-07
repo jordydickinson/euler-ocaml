@@ -13,7 +13,7 @@
 open Core_kernel
 
 let solve () =
-  (Numbers.perm_of_rank 10 999_999)._perm
+  Permutation.(of_rank 10 999_999 |> id)
   |> Array.to_list
   |> List.map ~f:string_of_int
   |> String.concat

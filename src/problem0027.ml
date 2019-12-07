@@ -41,7 +41,7 @@ let quadf a b n =
 
 let consec_primes f =
   let max_prime = Set.max_elt_exn primes in
-  Numbers.count_from 0
+  Sequences.count_from 0
   |> Sequence.map ~f:f
   |> Sequence.take_while
       ~f:(fun n -> assert (n < max_prime); Set.mem primes n)
