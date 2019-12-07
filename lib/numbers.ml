@@ -154,3 +154,14 @@ let perm_of_rank len rank =
   assert (rank >= 0);
   let fac = factoradic_of_int rank in
   perm_of_factoradic len fac
+
+let rec permutations xs =
+  let seq = Sequence.of_lazy @@ lazy begin
+    match xs with
+    | [] -> Sequence.singleton []
+    | x :: xs ->
+      let perms1 = Sequence.map (permutations xs) ~f:(List.cons x) in
+      let perms2 = permutations (xs @ [x]) in
+      Sequence.append perms1 perms2
+  end in
+  Sequence.take seq (factorial @@ List.length xs)
